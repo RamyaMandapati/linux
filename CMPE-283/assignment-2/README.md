@@ -20,11 +20,18 @@
           1. make -j 4 modules
           2. make -j 8 (procunits)
           3. Run sudo make INSTALL_MOD_STRIP=1 mdoules_install.
-          4. sudo make modules_install && sudo make install
+          4. sudo make install
           5. sudo reboot
  ### 7. After building the kernel, do changes to cpuid and vmx.c file, and add code to print the data of the leaf nodes.
-        Did the code changes for  0xffffffe and oxfffffff
+        Did the code changes for  0xffffffc and oxffffffd
  ### 8. Do the procedure of building the kernel again
+ ### 9. Add the dependent modules of kvm by removing the current files and adding them using modprobe
+            1. lsmod | grep kvm
+            2. sudo rmmod kvm_intel
+            3. sudo rmmod kvm
+            4. modprobe kvm
+            5. modprobe kvm_intel
+            
  ### 9. After building the kernel successfully, to test the output, we need a nested VM
  ### 10. To install the virtual manager, follow the below steps
           1. Install ubuntu desktop - https://phoenixnap.com/kb/how-to-install-a-gui-on-ubuntu
