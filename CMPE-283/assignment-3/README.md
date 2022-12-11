@@ -15,6 +15,6 @@ boot entail?
 
        No, the number of exits do not increase in a stable rate. Some of the exits increase, while the others stay same. The increment depends on the exit type. Approximately 1037272 exits.
     
-* Of the exit types defined in the SDM, which are the most frequent? Least?
+* 4. Of the exit types defined in the SDM, which are the most frequent? Least?
   * EXIT_REASON_EPT_VIOLATION(48),EXIT_REASON_MSR_READ(31) happens the most frequent.
   * EXIT_REASON_DR_ACCESS(29),EXIT_REASON_EPT_VIOLATION(48) are least frequently occuring.
