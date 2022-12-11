@@ -1520,6 +1520,24 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 
 	eax = kvm_rax_read(vcpu);
 	ecx = kvm_rcx_read(vcpu);
+	if(eax==0x4fffffff){
+	
+		//kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, true);
+		eax=atomic64_read(&exit_counters);
+		printk("eax is 0x4fffffff \n Total exits eax=%u",eax); 
+	}
+	else if(eax==0x4ffffffe){
+		//kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, true);
+				
+		ebx = ((atomic64_read(&exit_duration)>>32));
+		printk("eax = 0x4FFFFFFE \n Total time spent processing all exits in ebx[high 32 bits] = %u", ebx);
+			
+		ecx = (atomic64_read(&exit_duration) & 0xffffffff);
+		printk("eax = 0x4ffffffe \n Total time spent processing all exits in ecx[low 32 bits] = %u", ecx);
+		
+		printk("eax = 0x4ffffffe \n Total Cycles spent in exit = %llu", atomic64_read(&exit_duration));
+	
+	}
     if(eax==0x4ffffffc){
 	
 		//kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, true);

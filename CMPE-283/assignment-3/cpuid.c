@@ -1514,7 +1514,7 @@ EXPORT_SYMBOL_GPL(kvm_cpuid);
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
-
+	u64 cycles;
 	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
 		return 1;
 
@@ -1524,19 +1524,19 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 	
 		//kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, true);
 		eax=atomic64_read(&exit_counters);
-		printk("eax is 0x4fffffff \n Total exits eax=%u",eax); 
+		printk(KERN_INFO "CPUID(0x4FFFFFFF) -> ECX = %u", ecx);
+		cycles = atomic64_read(&type_cpu_cycles_counter[(int)ecx]);
+		printk(KERN_INFO "Type %u CPU Exit Cycle Time = %llu", ecx, cycles);
+		
+		// printk("eax is 0x4fffffff \n Total exits eax=%u",eax); 
 	}
 	else if(eax==0x4ffffffe){
 		//kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, true);
-				
-		ebx = ((atomic64_read(&exit_duration)>>32));
-		printk("eax = 0x4FFFFFFE \n Total time spent processing all exits in ebx[high 32 bits] = %u", ebx);
+		printk(KERN_INFO " CPUID(0x4FFFFFFE) -> ECX = %u", ecx);	
+		eax = arch_atomic_read(&type_exits_counter[(int)ecx]);
+		printk(KERN_INFO " Type %u Exit Count = %u", ecx, eax);
 			
-		ecx = (atomic64_read(&exit_duration) & 0xffffffff);
-		printk("eax = 0x4ffffffe \n Total time spent processing all exits in ecx[low 32 bits] = %u", ecx);
 		
-		printk("eax = 0x4ffffffe \n Total Cycles spent in exit = %llu", atomic64_read(&exit_duration));
-	
 	}
     if(eax==0x4ffffffc){
 	
